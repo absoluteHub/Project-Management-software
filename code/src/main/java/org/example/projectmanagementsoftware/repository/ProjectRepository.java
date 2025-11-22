@@ -1,0 +1,8 @@
+package org.example.projectmanagementsoftware.repository;
+
+import org.example.projectmanagementsoftware.domain.Project;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProjectRepository extends JpaRepository<Project, Long> {
+
+}
