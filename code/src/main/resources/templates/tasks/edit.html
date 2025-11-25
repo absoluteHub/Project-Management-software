@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Редагувати завдання</title>
+</head>
+
+<body>
+<div class="page-wrapper">
+    <div class="container">
+
+        <h1 class="header-title">Редагувати завдання</h1>
+
+        <form class="form-card"
+              th:action="@{|/tasks/edit/${task.id}|}"
+              th:object="${task}"
+              method="post"
+              novalidate>
+
+            <div class="form-grid">
+
+                <div class="form-group"
+                     th:classappend="${#fields.hasErrors('name')} ? 'form-group-error'">
+                    <label class="form-label">Назва:</label>
+                    <input class="form-input" th:field="*{name}">
+                    <div class="error-text" th:errors="*{name}"></div>
+                </div>
+
+                <div class="form-group"
+                     th:classappend="${#fields.hasErrors('description')} ? 'form-group-error'">
+                    <label class="form-label">Опис:</label>
+                    <textarea class="form-textarea" th:field="*{description}"></textarea>
+                    <div class="error-text" th:errors="*{description}"></div>
+                </div>
+
+                <div class="form-group"
+                     th:classappend="${#fields.hasErrors('deadline')} ? 'form-group-error'">
+                    <label class="form-label">Дедлайн:</label>
+                    <input type="date" class="form-date" th:field="*{deadline}">
+                    <div class="error-text" th:errors="*{deadline}"></div>
+                </div>
+
+                <div class="form-group"
+                     th:classappend="${#fields.hasErrors('priority')} ? 'form-group-error'">
+                    <label class="form-label">Пріоритет:</label>
+                    <select class="form-input" th:field="*{priority}">
+                        <option value="LOW">Низький</option>
+                        <option value="MEDIUM">Середній</option>
+                        <option value="HIGH">Високий</option>
+                    </select>
+                    <div class="error-text" th:errors="*{priority}"></div>
+                </div>
+
+                <div class="form-group"
+                     th:classappend="${#fields.hasErrors('status')} ? 'form-group-error'">
+                    <label class="form-label">Статус:</label>
+                    <select class="form-input" th:field="*{status}">
+                        <option value="TODO">Заплановано</option>
+                        <option value="IN_PROGRESS">В процесі</option>
+                        <option value="DONE">Виконано</option>
+                    </select>
+                    <div class="error-text" th:errors="*{status}"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Зберегти</button>
+                <a th:href="@{|/tasks/${task.id}|}" class="btn btn-secondary">Назад</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

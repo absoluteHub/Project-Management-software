@@ -1,16 +1,12 @@
 package org.example.projectmanagementsoftware.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "attachments")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class Attachment {
 
     @Id
@@ -22,5 +18,6 @@ public class Attachment {
     private String path;
 
     @ManyToOne
+    @JoinColumn(name = "task_id")
     private Task task;
 }

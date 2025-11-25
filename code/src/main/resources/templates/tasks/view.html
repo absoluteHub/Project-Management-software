@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title th:text="${task.name}"></title>
+</head>
+
+<body>
+<div class="page-wrapper">
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1 class="header-title" th:text="${task.name}"></h1>
+                <div class="header-subtitle">Перегляд завдання</div>
+            </div>
+
+            <a th:href="@{|/projects/${task.project.id}|}" class="btn btn-secondary">← До проєкту</a>
+        </div>
+
+        <div class="card">
+
+            <p class="card-description">
+                <b>Опис:</b> <span th:text="${task.description}"></span>
+            </p>
+
+            <p class="card-deadline">
+                <b>Дедлайн:</b> <span th:text="${task.deadline}"></span>
+            </p>
+
+            <p>
+                <b>Пріоритет:</b> <span th:text="${task.priority}"></span>
+            </p>
+
+            <hr style="margin:20px 0;">
+
+            <h3>Вкладення</h3>
+
+            <div th:if="${task.attachments.size() == 0}" class="empty-state">
+                Немає вкладених файлів.
+            </div>
+
+            <ul th:if="${task.attachments.size() > 0}" class="simple-list">
+
+                <li th:each="a : ${task.attachments}">
+                    <a th:href="@{${a.path}}" target="_blank">
+                        📄 <span th:text="${a.fileName}"></span>
+                    </a>
+
+                    <form th:action="@{|/attachments/delete/${a.id}|}"
+                          method="post"
+                          style="display:inline; margin-left: 10px;">
+                        <button class="btn btn-secondary"
+                                onclick="return confirm('Видалити файл?')"
+                                style="border-color:#dc2626; color:#fecaca; padding:2px 6px;">
+                            x
+                        </button>
+                    </form>
+                </li>
+
+            </ul>
+
+            <a th:href="@{|/attachments/create/${task.id}|}"
+               class="btn btn-primary" style="margin-top:10px;">
+                + Додати файл
+            </a>
+
+
+            <div class="form-actions" style="margin-top: 20px;">
+                <a th:href="@{|/tasks/edit/${task.id}|}" class="btn btn-secondary">Редагувати</a>
+
+                <form th:action="@{|/tasks/delete/${task.id}|}" method="post" style="display:inline;">
+                    <button class="btn btn-secondary"
+                            onclick="return confirm('Точно видалити завдання?')"
+                            style="border-color:#dc2626; color:#fecaca;">
+                        Видалити
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

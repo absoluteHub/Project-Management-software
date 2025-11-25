@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мої проєкти</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="page-wrapper">
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1 class="header-title">Мої проєкти</h1>
+                <div class="header-subtitle">Усі активні проєкти</div>
+            </div>
+
+            <a href="/projects/create" class="btn btn-primary">+ Створити проєкт</a>
+        </div>
+
+        <div th:if="${projects.size() == 0}" class="empty-state">
+            Немає жодного проєкту.
+            <br><br>
+            <a href="/projects/create" class="btn btn-primary">Створити перший проєкт</a>
+        </div>
+
+        <div th:if="${projects.size() > 0}">
+            <div th:each="p : ${projects}" class="card">
+
+                <div class="card-header">
+                    <div>
+                        <div class="card-title" th:text="${p.name}"></div>
+                        <div class="card-deadline">
+                            Дедлайн:
+                            <span th:text="${p.deadline}"></span>
+                        </div>
+                    </div>
+
+                    <a th:href="@{|/projects/${p.id}|}" class="btn btn-secondary">Відкрити →</a>
+                </div>
+
+                <div class="card-description" th:text="${p.description}"></div>
+
+                <div class="card-footer">
+                    <div class="badge">
+                        Завдань: <span th:text="${p.tasks.size()}"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+</html>

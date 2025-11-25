@@ -1,10 +1,7 @@
 package org.example.projectmanagementsoftware.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.example.projectmanagementsoftware.domain.enums.Priority;
 import org.example.projectmanagementsoftware.domain.enums.TaskStatus;
 
@@ -14,10 +11,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "tasks")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class Task {
 
     @Id
@@ -35,14 +30,9 @@ public class Task {
     private TaskStatus status;
 
     @ManyToOne
-    private User assignee;
-
-    @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne
-    private Sprint sprint;
-
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<Attachment> attachments = new ArrayList<>();
+    private List<Attachment> attachments = new ArrayList<> ();
 }

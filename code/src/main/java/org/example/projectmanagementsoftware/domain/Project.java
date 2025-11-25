@@ -29,14 +29,4 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Sprint> sprints = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "project_team",
-            joinColumns = @JoinColumn(name="project_id"),
-            inverseJoinColumns = @JoinColumn(name="user_id")
-    )
-    private List<User> team = new ArrayList<>();
 }

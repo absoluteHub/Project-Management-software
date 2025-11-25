@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Створити проєкт</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body class="page-wrapper">
+<div class="container">
+
+    <div class="header">
+        <div>
+            <h1 class="header-title">Створити проєкт</h1>
+            <div class="header-subtitle">Заповни дані нового проєкту</div>
+        </div>
+
+        <a th:href="@{/projects}" class="btn btn-secondary">← До списку</a>
+    </div>
+
+    <form class="form-card"
+          th:action="@{/projects/create}"
+          th:object="${project}"
+          method="post">
+
+        <div th:if="${#fields.hasGlobalErrors()}" class="form-error-global">
+            <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label class="form-label">Назва:</label>
+                <input type="text" class="form-input" th:field="*{name}">
+                <div class="field-error"
+                     th:if="${#fields.hasErrors('name')}"
+                     th:errors="*{name}"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Опис:</label>
+                <textarea class="form-textarea" rows="4" th:field="*{description}"></textarea>
+                <div class="field-error"
+                     th:if="${#fields.hasErrors('description')}"
+                     th:errors="*{description}"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Дедлайн:</label>
+                <input type="date" class="form-date" th:field="*{deadline}">
+                <div class="field-error"
+                     th:if="${#fields.hasErrors('deadline')}"
+                     th:errors="*{deadline}"></div>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Створити</button>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>

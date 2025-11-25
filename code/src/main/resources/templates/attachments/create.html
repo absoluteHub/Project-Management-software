@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Додати вкладення</title>
+</head>
+
+<body>
+<div class="page-wrapper">
+    <div class="container">
+
+        <h1 class="header-title">Додати вкладення</h1>
+
+        <form class="form-card"
+              th:action="@{/attachments/create}"
+              th:object="${attachment}"
+              method="post"
+              enctype="multipart/form-data"
+              novalidate>
+
+            <input type="hidden" th:field="*{taskId}">
+
+            <div class="form-group"
+                 th:classappend="${#fields.hasErrors('file')} ? 'form-group-error'">
+                <label class="form-label">Файл:</label>
+                <input type="file" class="form-input" th:field="*{file}"/>
+                <div class="error-text" th:errors="*{file}"></div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Завантажити</button>
+                <a th:href="@{|/tasks/${task.id}|}" class="btn btn-secondary">Назад</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
