@@ -33,6 +33,7 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<Attachment> attachments = new ArrayList<> ();
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Attachment> attachments = new ArrayList<>();
+
 }

@@ -29,4 +29,16 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project")
+    private List<ProjectTeam> team;
+
+    @OneToMany(mappedBy = "project")
+    private List<Requirement> requirements;
+
+    @OneToMany(mappedBy = "project")
+    private List<Iteration> iterations;
+
+    @OneToMany(mappedBy = "project")
+    private List<Version> versions;
+
 }

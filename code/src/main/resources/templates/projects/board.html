@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kanban</title>
+    <link rel="stylesheet" th:href="@{/css/kanban.css}">
+</head>
+
+<body class="page-wrapper">
+<div class="container">
+
+    <div class="header">
+        <h1 class="header-title">Kanban дошка</h1>
+        <a th:href="@{|/projects/${project.id}|}" class="btn btn-secondary">← Назад</a>
+    </div>
+
+    <div class="kanban-grid">
+
+        <div class="kanban-column">
+            <h2>TODO</h2>
+            <div class="kanban-list">
+                <div th:each="t : ${todo}" class="kanban-card">
+                    <div th:text="${t.name}" class="kanban-title"></div>
+                    <div class="kanban-actions">
+                        <a th:href="@{|/tasks/${t.id}/move/IN_PROGRESS|}" class="btn btn-primary">→ В роботу</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kanban-column">
+            <h2>В процесі</h2>
+            <div class="kanban-list">
+                <div th:each="t : ${progress}" class="kanban-card">
+                    <div th:text="${t.name}" class="kanban-title"></div>
+                    <div class="kanban-actions">
+                        <a th:href="@{|/tasks/${t.id}/move/TODO|}" class="btn btn-secondary">← Назад</a>
+                        <a th:href="@{|/tasks/${t.id}/move/DONE|}" class="btn btn-primary">✓ Готово</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kanban-column">
+            <h2>Готово</h2>
+            <div class="kanban-list">
+                <div th:each="t : ${done}" class="kanban-card">
+                    <div th:text="${t.name}" class="kanban-title"></div>
+                    <div class="kanban-actions">
+                        <a th:href="@{|/tasks/${t.id}/move/IN_PROGRESS|}" class="btn btn-secondary">← В процес</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

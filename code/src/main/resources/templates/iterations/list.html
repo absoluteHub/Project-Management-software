@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ітерації</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="page-wrapper">
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1 class="header-title">Ітерації</h1>
+                <div class="header-subtitle" th:text="${project.name}"></div>
+            </div>
+
+            <a th:href="@{|/projects/${project.id}|}" class="btn btn-secondary">← Назад</a>
+        </div>
+
+        <div th:if="${iterations.size() == 0}" class="empty-state">
+            Немає жодної ітерації.
+            <br><br>
+            <a th:href="@{|/iterations/create/${project.id}|}" class="btn btn-primary">+ Створити ітерацію</a>
+        </div>
+
+        <div th:if="${iterations.size() > 0}">
+            <div th:each="it : ${iterations}" class="card">
+
+                <div class="card-header">
+                    <div>
+                        <div class="card-title" th:text="${it.name}"></div>
+                        <div class="card-deadline">
+                            <b>Період:</b>
+                            <span th:text="${it.startDate}"></span>
+                            —
+                            <span th:text="${it.endDate}"></span>
+                        </div>
+                        <div class="badge">
+                            <span th:text="${it.iterationType}"></span>
+                        </div>
+                    </div>
+
+                    <a th:href="@{|/iterations/edit/${it.id}|}" class="btn btn-secondary">Редагувати →</a>
+                </div>
+
+                <form th:action="@{|/iterations/delete/${it.id}|}" method="post">
+                    <input type="hidden" name="projectId" th:value="${project.id}">
+                    <button class="btn btn-secondary"
+                            onclick="return confirm('Видалити ітерацію?')"
+                            style="border-color:#dc2626; color:#fecaca; margin-top:10px;">
+                        Видалити
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <a th:href="@{|/iterations/create/${project.id}|}" class="btn btn-primary" style="margin-top:12px;">
+            + Створити ітерацію
+        </a>
+
+    </div>
+</div>
+</body>
+</html>

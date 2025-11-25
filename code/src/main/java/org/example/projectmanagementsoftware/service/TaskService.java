@@ -10,6 +10,8 @@ import org.example.projectmanagementsoftware.repository.ProjectRepository;
 import org.example.projectmanagementsoftware.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -79,4 +81,11 @@ public class TaskService {
         taskRepository.save(t);
     }
 
+    public List<Task> getByProjectAndStatus(Long projectId, TaskStatus status) {
+        return taskRepository.findByProjectIdAndStatus(projectId, status);
+    }
+
+    public Task save(Task task) {
+        return taskRepository.save(task);
+    }
 }

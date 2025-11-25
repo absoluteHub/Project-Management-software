@@ -2,6 +2,8 @@ package org.example.projectmanagementsoftware.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.projectmanagementsoftware.domain.Task;
+import org.example.projectmanagementsoftware.domain.enums.TaskStatus;
 import org.example.projectmanagementsoftware.dto.TaskDto;
 import org.example.projectmanagementsoftware.service.TaskService;
 import org.springframework.stereotype.Controller;
@@ -67,5 +69,17 @@ public class TaskController {
     public String markDone(@PathVariable Long id) {
         taskService.markDone(id);
         return "redirect:/tasks/" + id;
+    }
+
+    @GetMapping("/{id}/move/{status}")
+    public String changeStatus(
+            @PathVariable Long id,
+            @PathVariable TaskStatus status
+    ) {
+        Task t = taskService.getTaskById(id);
+        t.setStatus(status);
+        taskService.save(t);
+
+        return "redirect:/projects/" + t.getProject().getId() + "/board";
     }
 }

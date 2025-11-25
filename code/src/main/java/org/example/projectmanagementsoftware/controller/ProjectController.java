@@ -3,8 +3,10 @@ package org.example.projectmanagementsoftware.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.projectmanagementsoftware.domain.Project;
+import org.example.projectmanagementsoftware.domain.enums.TaskStatus;
 import org.example.projectmanagementsoftware.dto.ProjectDto;
 import org.example.projectmanagementsoftware.service.ProjectService;
+import org.example.projectmanagementsoftware.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final TaskService taskService;
 
     @GetMapping
     public String list(Model model) {
@@ -72,5 +75,16 @@ public class ProjectController {
     public String delete(@PathVariable Long id) {
         projectService.delete(id);
         return "redirect:/projects";
+    }
+
+    @GetMapping("/{projectId}/board")
+    public String kanban(@PathVariable Long projectId, Model model) {
+        model.addAttribute("project", projectService.getProjectById(projectId));
+
+        model.addAttribute("todo", taskService.getByProjectAndStatus(projectId, TaskStatus.TODO));
+        model.addAttribute("progress", taskService.getByProjectAndStatus(projectId, TaskStatus.IN_PROGRESS));
+        model.addAttribute("done", taskService.getByProjectAndStatus(projectId, TaskStatus.DONE));
+
+        return "projects/board";
     }
 }

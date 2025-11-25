@@ -4,20 +4,20 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "attachments")
+@Table(name = "project_team")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class Attachment {
+public class ProjectTeam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileName;
-    private String fileType;
-    private String path;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
+    @JoinColumn(name = "user_id")
+    private User user;
 }

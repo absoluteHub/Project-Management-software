@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Версії проєкту</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="page-wrapper">
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1 class="header-title">Версії</h1>
+                <div class="header-subtitle" th:text="${project.name}"></div>
+            </div>
+
+            <a th:href="@{|/projects/${project.id}|}" class="btn btn-secondary">← Назад</a>
+        </div>
+
+        <div th:if="${versions.size() == 0}" class="empty-state">
+            Немає жодної версії.
+            <br><br>
+            <a th:href="@{|/versions/create/${project.id}|}" class="btn btn-primary">+ Додати версію</a>
+        </div>
+
+        <div th:if="${versions.size() > 0}">
+            <div th:each="v : ${versions}" class="card">
+
+                <div class="card-header">
+                    <div>
+                        <div class="card-title" th:text="${v.versionNumber}"></div>
+
+                        <div class="card-deadline">
+                            <b>Дата релізу:</b>
+                            <span th:text="${v.releaseDate}"></span>
+                        </div>
+
+                        <div th:if="${v.description != null}">
+                            <i th:text="${v.description}" style="color:#9ca3af;"></i>
+                        </div>
+
+                        <div th:if="${v.executablePath != null}" style="margin-top:8px;">
+                            <a th:href="${v.executablePath}" class="btn btn-primary" download>
+                                Завантажити виконуваний файл
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <a th:href="@{|/versions/edit/${v.id}|}" class="btn btn-secondary">Редагувати →</a>
+
+                        <form th:action="@{|/versions/delete/${v.id}|}" method="post">
+                            <input type="hidden" name="projectId" th:value="${project.id}">
+                            <button class="btn btn-secondary"
+                                    onclick="return confirm('Видалити версію?')"
+                                    style="border-color:#dc2626; color:#fecaca;">
+                                Видалити
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <a th:href="@{|/versions/create/${project.id}|}" class="btn btn-primary" style="margin-top:12px;">
+            + Додати версію
+        </a>
+
+    </div>
+</div>
+</body>
+</html>

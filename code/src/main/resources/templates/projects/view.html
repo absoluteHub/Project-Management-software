@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <meta charset="UTF-8">
     <title th:text="${project.name}"></title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
 <body>
@@ -61,6 +62,93 @@
                 </ul>
 
                 <a th:href="@{|/tasks/create/${project.id}|}" class="btn btn-primary">Створити завдання</a>
+
+                <hr style="margin: 22px 0; border-color: #334155;">
+
+
+                <h2>Команда</h2>
+
+                <div th:if="${project.team == null or project.team.size() == 0}" class="empty-state">
+                    Команда ще не сформована.
+                </div>
+
+                <ul th:if="${project.team != null and project.team.size() > 0}" class="simple-list">
+                    <li th:each="m : ${project.team}">
+                        <span th:text="${m.user.fullName}"></span>
+                        <span style="color:#64748b; font-size:12px;">(
+                <span th:text="${m.user.role}"></span>
+            )</span>
+                    </li>
+                </ul>
+
+                <a th:href="@{|/projects/team/${project.id}|}" class="btn btn-secondary">Керувати командою</a>
+
+                <hr style="margin: 22px 0; border-color: #334155;">
+
+
+                <h2>Вимоги</h2>
+
+                <div th:if="${project.requirements == null or project.requirements.size() == 0}" class="empty-state">
+                    Немає зареєстрованих вимог.
+                </div>
+
+                <ul th:if="${project.requirements != null and project.requirements.size() > 0}" class="simple-list">
+                    <li th:each="r : ${project.requirements}">
+                        <a th:href="@{|/requirements/edit/${r.id}|}" th:text="${r.title}"></a>
+                    </li>
+                </ul>
+
+                <a th:href="@{|/requirements/project/${project.id}|}" class="btn btn-secondary">Вимоги проєкту</a>
+                <a th:href="@{|/requirements/create/${project.id}|}" class="btn btn-primary" style="margin-top:6px;">+ Додати вимогу</a>
+
+                <hr style="margin: 22px 0; border-color: #334155;">
+
+
+                <h2>Ітерації</h2>
+
+                <div th:if="${project.iterations == null or project.iterations.size() == 0}" class="empty-state">
+                    Ітерацій ще немає.
+                </div>
+
+                <ul th:if="${project.iterations != null and project.iterations.size() > 0}" class="simple-list">
+                    <li th:each="it : ${project.iterations}">
+                        <a th:href="@{|/iterations/edit/${it.id}|}">
+                            <span th:text="${it.name}"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <a th:href="@{|/iterations/project/${project.id}|}" class="btn btn-secondary">Переглянути</a>
+                <a th:href="@{|/iterations/create/${project.id}|}" class="btn btn-primary" style="margin-top:6px;">+ Нова ітерація</a>
+
+                <hr style="margin: 22px 0; border-color: #334155;">
+
+
+                <h2>Версії програми</h2>
+
+                <div th:if="${project.versions == null or project.versions.size() == 0}" class="empty-state">
+                    Немає релізів.
+                </div>
+
+                <ul th:if="${project.versions != null and project.versions.size() > 0}" class="simple-list">
+                    <li th:each="v : ${project.versions}">
+                        <a th:href="@{|/versions/edit/${v.id}|}">
+                            Версія:
+                            <span th:text="${v.versionNumber}"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <a th:href="@{|/versions/project/${project.id}|}" class="btn btn-secondary">Всі версії</a>
+                <a th:href="@{|/versions/create/${project.id}|}" class="btn btn-primary" style="margin-top:6px;">+ Нова версія</a>
+
+                <hr style="margin: 22px 0; border-color: #334155;">
+
+
+                <h2>Kanban-дошка</h2>
+                <a th:href="@{|/projects/${project.id}/board|}" class="btn btn-primary">
+                    Відкрити дошку
+                </a>
 
             </div>
         </div>

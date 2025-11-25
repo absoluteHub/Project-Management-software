@@ -3,21 +3,25 @@ package org.example.projectmanagementsoftware.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name = "attachments")
+@Table(name = "versions")
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class Attachment {
+public class Version {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileName;
-    private String fileType;
-    private String path;
+    private String versionNumber;
+    private String description;
+    private LocalDate releaseDate;
+    private String executablePath;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
+    @JoinColumn(name = "project_id")
+    private Project project;
 }
+

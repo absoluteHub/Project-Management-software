@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вимоги проєкту</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="page-wrapper">
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1 class="header-title">Вимоги проєкту</h1>
+                <div class="header-subtitle" th:text="${project.name}"></div>
+            </div>
+
+            <a th:href="@{|/projects/${project.id}|}" class="btn btn-secondary">← Назад</a>
+        </div>
+
+        <div th:if="${requirements.size() == 0}" class="empty-state">
+            Немає жодної вимоги.
+            <br><br>
+            <a th:href="@{|/requirements/create/${project.id}|}" class="btn btn-primary">+ Додати вимогу</a>
+        </div>
+
+        <div th:if="${requirements.size() > 0}">
+            <div th:each="r : ${requirements}" class="card">
+
+                <div class="card-header">
+                    <div>
+                        <div class="card-title" th:text="${r.title}"></div>
+                        <div class="card-deadline">
+                            Тип: <span th:text="${r.requirementType}"></span>
+                        </div>
+                    </div>
+
+                    <a th:href="@{|/requirements/edit/${r.id}|}" class="btn btn-secondary">Редагувати →</a>
+                </div>
+
+                <div class="card-description" th:text="${r.description}"></div>
+
+                <div class="card-footer">
+
+                    <div class="badge">
+                        Статус: <span th:text="${r.status}"></span>
+                    </div>
+
+                    <form th:action="@{|/requirements/delete/${r.id}|}" method="post" style="display:inline;">
+                        <input type="hidden" name="projectId" th:value="${project.id}">
+                        <button class="btn btn-secondary"
+                                onclick="return confirm('Видалити вимогу?')"
+                                style="border-color:#dc2626; color:#fecaca;">
+                            Видалити
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+        <a th:href="@{|/requirements/create/${project.id}|}" class="btn btn-primary" style="margin-top:12px;">
+            + Додати вимогу
+        </a>
+
+    </div>
+</div>
+</body>
+</html>
