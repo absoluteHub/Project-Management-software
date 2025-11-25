@@ -3,11 +3,12 @@ package org.example.projectmanagementsoftware.service;
 import lombok.RequiredArgsConstructor;
 import org.example.projectmanagementsoftware.domain.Project;
 import org.example.projectmanagementsoftware.domain.Requirement;
-import org.example.projectmanagementsoftware.domain.enums.RequirementStatus;
 import org.example.projectmanagementsoftware.dto.RequirementDto;
 import org.example.projectmanagementsoftware.exception.NotFoundException;
 import org.example.projectmanagementsoftware.repository.ProjectRepository;
 import org.example.projectmanagementsoftware.repository.RequirementRepository;
+import org.example.projectmanagementsoftware.strategy.implementations.RequirementStrategyFactory;
+import org.example.projectmanagementsoftware.strategy.intefraces.RequirementStrategy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,11 +34,14 @@ public class RequirementService {
         Project project = projectRepository.findById(dto.getProjectId())
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 
+        RequirementStrategy strategy = RequirementStrategyFactory.getStrategy(dto.getRequirementType());
+        String processedDescription = strategy.generateDescription(dto.getDescription());
+
         Requirement r = new Requirement();
         r.setTitle(dto.getTitle());
-        r.setDescription(dto.getDescription());
+        r.setDescription(processedDescription);
         r.setRequirementType(dto.getRequirementType());
-        r.setStatus(dto.getStatus() != null ? dto.getStatus() : RequirementStatus.DRAFT);
+        r.setStatus(dto.getStatus());
         r.setProject(project);
 
         return requirementRepository.save(r);
@@ -46,8 +50,11 @@ public class RequirementService {
     public Requirement update(Long id, RequirementDto dto) {
         Requirement r = getById(id);
 
+        var strategy = RequirementStrategyFactory.getStrategy(dto.getRequirementType());
+        String processedDescription = strategy.generateDescription(dto.getDescription());
+
         r.setTitle(dto.getTitle());
-        r.setDescription(dto.getDescription());
+        r.setDescription(processedDescription);
         r.setRequirementType(dto.getRequirementType());
         r.setStatus(dto.getStatus());
 

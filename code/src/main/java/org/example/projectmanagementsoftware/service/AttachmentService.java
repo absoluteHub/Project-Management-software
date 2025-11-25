@@ -48,7 +48,7 @@ public class AttachmentService {
         Attachment attachment = new Attachment();
         attachment.setFileName(file.getOriginalFilename());
         attachment.setFileType(file.getContentType());
-        attachment.setPath("/uploads/" + filename); // шлях для браузера!
+        attachment.setPath("/uploads/" + filename);
         attachment.setTask(task);
 
         return attachmentRepository.save(attachment);
