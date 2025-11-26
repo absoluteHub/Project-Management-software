@@ -1,7 +1,8 @@
-package org.example.projectmanagementsoftware.taskChain.handler;
+package org.example.projectmanagementsoftware.pattern.taskChain.handler;
 
 import org.example.projectmanagementsoftware.domain.Task;
 import org.example.projectmanagementsoftware.dto.TaskDto;
+import org.example.projectmanagementsoftware.exception.TaskValidationException;
 
 public class NameValidationHandler implements TaskHandler {
 
@@ -16,10 +17,9 @@ public class NameValidationHandler implements TaskHandler {
     public void handle(TaskDto dto, Task existingTask) {
 
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
-            throw new RuntimeException("Назва задачі не може бути порожньою (Chain validation)");
+            throw new TaskValidationException("Назва задачі не може бути порожньою");
         }
 
         if (next != null) next.handle(dto, existingTask);
     }
 }
-

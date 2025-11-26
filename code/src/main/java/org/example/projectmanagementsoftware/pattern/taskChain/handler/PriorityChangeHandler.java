@@ -1,8 +1,9 @@
-package org.example.projectmanagementsoftware.taskChain.handler;
+package org.example.projectmanagementsoftware.pattern.taskChain.handler;
 
 import org.example.projectmanagementsoftware.domain.Task;
 import org.example.projectmanagementsoftware.domain.enums.Priority;
 import org.example.projectmanagementsoftware.dto.TaskDto;
+import org.example.projectmanagementsoftware.exception.TaskValidationException;
 
 public class PriorityChangeHandler implements TaskHandler {
 
@@ -20,9 +21,10 @@ public class PriorityChangeHandler implements TaskHandler {
             Priority oldP = existingTask.getPriority();
             Priority newP = dto.getPriority();
 
-            if (newP.ordinal() < oldP.ordinal()) {
-                throw new RuntimeException("Зниження пріоритету заборонено: "
-                        + oldP + " → " + newP);
+            if (oldP != null && newP != null && newP.ordinal() < oldP.ordinal()) {
+                throw new TaskValidationException (
+                        "Зниження пріоритету заборонено: " + oldP + " → " + newP
+                );
             }
         }
 

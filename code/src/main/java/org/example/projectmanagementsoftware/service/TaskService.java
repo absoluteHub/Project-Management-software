@@ -8,7 +8,7 @@ import org.example.projectmanagementsoftware.dto.TaskDto;
 import org.example.projectmanagementsoftware.exception.NotFoundException;
 import org.example.projectmanagementsoftware.repository.ProjectRepository;
 import org.example.projectmanagementsoftware.repository.TaskRepository;
-import org.example.projectmanagementsoftware.taskChain.config.TaskValidationChain;
+import org.example.projectmanagementsoftware.pattern.taskChain.config.TaskValidationChain;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

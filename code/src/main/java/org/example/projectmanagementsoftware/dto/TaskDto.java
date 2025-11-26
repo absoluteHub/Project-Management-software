@@ -17,14 +17,12 @@ public class TaskDto {
 
     private Long id;
 
-    @NotBlank(message = "Назва задачі не може бути порожньою")
     private String name;
 
     @NotBlank(message = "Опис не може бути порожнім")
     private String description;
 
     @NotNull(message = "Дедлайн є обов’язковим")
-    @Future(message = "Дата дедлайну повинна бути у майбутньому")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadline;
 

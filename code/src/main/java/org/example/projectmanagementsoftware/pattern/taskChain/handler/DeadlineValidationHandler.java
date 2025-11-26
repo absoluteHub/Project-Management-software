@@ -1,7 +1,8 @@
-package org.example.projectmanagementsoftware.taskChain.handler;
+package org.example.projectmanagementsoftware.pattern.taskChain.handler;
 
 import org.example.projectmanagementsoftware.domain.Task;
 import org.example.projectmanagementsoftware.dto.TaskDto;
+import org.example.projectmanagementsoftware.exception.TaskValidationException;
 
 import java.time.LocalDate;
 
@@ -17,11 +18,10 @@ public class DeadlineValidationHandler implements TaskHandler {
     @Override
     public void handle(TaskDto dto, Task existingTask) {
 
-        if (dto.getDeadline().isBefore(LocalDate.now())) {
-            throw new RuntimeException("Дедлайн задачі не може бути у минулому(Chain validation)");
+        if (dto.getDeadline() != null && dto.getDeadline().isBefore(LocalDate.now())) {
+            throw new TaskValidationException("Дедлайн задачі не може бути у минулому");
         }
 
         if (next != null) next.handle(dto, existingTask);
     }
 }
-

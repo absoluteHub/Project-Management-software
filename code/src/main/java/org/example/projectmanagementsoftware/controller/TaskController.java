@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.projectmanagementsoftware.domain.Task;
 import org.example.projectmanagementsoftware.domain.enums.TaskStatus;
 import org.example.projectmanagementsoftware.dto.TaskDto;
+import org.example.projectmanagementsoftware.exception.TaskValidationException;
 import org.example.projectmanagementsoftware.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,12 +52,21 @@ public class TaskController {
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Long id,
                          @Valid @ModelAttribute("task") TaskDto dto,
-                         BindingResult result) {
+                         BindingResult result,
+                         Model model) {
+
         if (result.hasErrors()) {
             return "tasks/edit";
         }
-        Long projectId = taskService.update(id, dto);
-        return "redirect:/projects/" + projectId;
+
+        try {
+            Long projectId = taskService.update(id, dto);
+            return "redirect:/projects/" + projectId;
+
+        } catch (TaskValidationException e) {
+            result.reject("task.validation", e.getMessage());
+            return "tasks/edit";
+        }
     }
 
     @PostMapping("/delete/{id}")

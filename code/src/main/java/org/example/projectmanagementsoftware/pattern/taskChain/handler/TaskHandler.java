@@ -1,4 +1,4 @@
-package org.example.projectmanagementsoftware.taskChain.handler;
+package org.example.projectmanagementsoftware.pattern.taskChain.handler;
 
 import org.example.projectmanagementsoftware.domain.Task;
 import org.example.projectmanagementsoftware.dto.TaskDto;
