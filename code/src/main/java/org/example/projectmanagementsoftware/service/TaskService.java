@@ -8,6 +8,7 @@ import org.example.projectmanagementsoftware.dto.TaskDto;
 import org.example.projectmanagementsoftware.exception.NotFoundException;
 import org.example.projectmanagementsoftware.repository.ProjectRepository;
 import org.example.projectmanagementsoftware.repository.TaskRepository;
+import org.example.projectmanagementsoftware.taskChain.config.TaskValidationChain;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final TaskValidationChain taskValidationChain;
 
     public Task getTaskById(Long id) {
         return taskRepository.findById(id)
@@ -41,6 +43,9 @@ public class TaskService {
     }
 
     public Task createTask(TaskDto dto, Long projectId) {
+
+        taskValidationChain.getChain().handle(dto, null);
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 
@@ -56,16 +61,19 @@ public class TaskService {
     }
 
     public Long update(Long id, TaskDto dto) {
-        Task t = getTaskById(id);
 
-        t.setName(dto.getName());
-        t.setDescription(dto.getDescription());
-        t.setDeadline(dto.getDeadline());
-        t.setPriority(dto.getPriority());
-        t.setStatus(dto.getStatus());
+        Task existing = getTaskById(id);
 
-        taskRepository.save(t);
-        return t.getProject().getId();
+        taskValidationChain.getChain().handle(dto, existing);
+
+        existing.setName(dto.getName());
+        existing.setDescription(dto.getDescription());
+        existing.setDeadline(dto.getDeadline());
+        existing.setPriority(dto.getPriority());
+        existing.setStatus(dto.getStatus());
+
+        taskRepository.save(existing);
+        return existing.getProject().getId();
     }
 
     public Long delete(Long id) {
