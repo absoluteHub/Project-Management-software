@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -20,6 +21,7 @@ public class ProjectDto {
 
     @NotNull(message = "Дата дедлайну є обов’язковою")
     @Future(message = "Дедлайн має бути у майбутньому")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadline;
 
 }

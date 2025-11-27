@@ -16,25 +16,25 @@
                 <div class="header-subtitle">Учасники та ролі</div>
             </div>
 
-            <a th:href="@{|/projects/${project.id}|}" class="btn btn-secondary">← Назад</a>
+            <a th:href="@{|/projects/${team.project.id}|}" class="btn btn-secondary">← Назад</a>
         </div>
 
         <div class="card">
             <h2 style="margin-bottom: 12px;">Учасники</h2>
 
-            <div th:if="${team.size() == 0}" class="empty-state">
+            <div th:if="${team.team.size() == 0}" class="empty-state">
                 Команда ще не сформована.
             </div>
 
-            <ul th:if="${team.size() > 0}" class="simple-list">
-                <li th:each="m : ${team}">
+            <ul th:if="${team.team.size() > 0}" class="simple-list">
+                <li th:each="m : ${team.team}">
                     <b th:text="${m.user.fullName}"></b>
                     <span style="color:#9ca3af;"> — </span>
 
                     <span th:text="${m.user.role}" style="color:#6ee7b7;"></span>
 
                     <form th:action="@{|/projects/team/remove/${m.id}|}" method="post" style="display:inline;">
-                        <input type="hidden" name="projectId" th:value="${project.id}">
+                        <input type="hidden" name="projectId" th:value="${team.project.id}">
                         <button class="btn btn-secondary"
                                 onclick="return confirm('Видалити з команди?')"
                                 style="border-color:#dc2626; color:#fecaca; padding:2px 6px; margin-left:10px;">
@@ -52,13 +52,13 @@
 
             <form th:action="@{/projects/team/add}" method="post" class="form-grid">
 
-                <input type="hidden" name="projectId" th:value="${project.id}">
+                <input type="hidden" name="projectId" th:value="${team.project.id}">
 
                 <div class="form-group">
                     <label class="form-label">Користувач:</label>
                     <select class="form-input" name="userId" required>
                         <option value="">— Оберіть користувача —</option>
-                        <option th:each="u : ${users}"
+                        <option th:each="u : ${team.users}"
                                 th:value="${u.id}"
                                 th:text="${u.fullName + ' (' + u.role + ')'}">
                         </option>

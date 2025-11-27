@@ -2,9 +2,9 @@ package org.example.projectmanagementsoftware.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.projectmanagementsoftware.dto.ProjectTeamDto;
-import org.example.projectmanagementsoftware.service.ProjectService;
+import org.example.projectmanagementsoftware.pattern.facade.ProjectManagementFacade;
+import org.example.projectmanagementsoftware.pattern.facade.dto.TeamDto;
 import org.example.projectmanagementsoftware.service.ProjectTeamService;
-import org.example.projectmanagementsoftware.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,27 +15,17 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectTeamController {
 
     private final ProjectTeamService projectTeamService;
-    private final ProjectService projectService;
-    private final UserService userService;
+    private final ProjectManagementFacade facade;
 
     @GetMapping("/{projectId}")
     public String team(@PathVariable Long projectId, Model model) {
-
-        model.addAttribute("project", projectService.getProjectById(projectId));
-        model.addAttribute("team", projectTeamService.getTeam(projectId));
-        model.addAttribute("users", userService.getAll());
-
-        ProjectTeamDto dto = new ProjectTeamDto();
-        dto.setProjectId(projectId);
-
-        model.addAttribute("form", dto);
-
+        TeamDto teamDto = facade.getTeam (projectId);
+        model.addAttribute ("team",teamDto);
         return "team/manage";
     }
 
     @PostMapping("/add")
     public String addMember(@ModelAttribute ProjectTeamDto dto) {
-
         projectTeamService.addMember(dto.getProjectId(), dto.getUserId());
         return "redirect:/projects/team/" + dto.getProjectId();
     }

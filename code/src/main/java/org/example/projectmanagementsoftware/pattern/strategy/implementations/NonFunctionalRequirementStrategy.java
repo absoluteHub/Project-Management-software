@@ -20,9 +20,9 @@ public class NonFunctionalRequirementStrategy implements RequirementStrategy {
     public String generateDescription(String baseDescription) {
         return "[Нефункціональна вимога]\n" +
                 "Критерії:\n" +
-                "- Продуктивність: <вкажіть>\n" +
-                "- Безпека: <вкажіть>\n" +
-                "- Якість: <вкажіть>\n\n" +
+                "- Продуктивність: \n" +
+                "- Безпека: \n" +
+                "- Якість: \n\n" +
                 baseDescription;
     }
 
