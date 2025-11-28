@@ -29,4 +29,6 @@ public class VersionDto {
 
     @NotNull
     private Long projectId;
+
+    private Long parentId;
 }

@@ -51,6 +51,8 @@
                     <div style="display:flex; flex-direction:column; gap:6px;">
                         <a th:href="@{|/versions/edit/${v.id}|}" class="btn btn-secondary">Редагувати →</a>
 
+                        <a th:href="@{|/versions/${v.id}/tree|}" class="btn btn-primary">Дерево →</a>
+
                         <form th:action="@{|/versions/delete/${v.id}|}" method="post">
                             <input type="hidden" name="projectId" th:value="${project.id}">
                             <button class="btn btn-secondary"

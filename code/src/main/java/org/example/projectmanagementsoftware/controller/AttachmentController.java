@@ -25,29 +25,21 @@ public class AttachmentController {
 
         model.addAttribute("attachment", dto);
         model.addAttribute("task", taskService.getTaskById(taskId));
-
         return "attachments/create";
     }
 
     @PostMapping("/create")
-    public String create(
-            @Valid @ModelAttribute("attachment") AttachmentDto dto,
-            BindingResult result
-    ) {
-        if (result.hasErrors()) {
-            return "attachments/create";
-        }
+    public String create(@Valid @ModelAttribute("attachment") AttachmentDto dto,
+                         BindingResult result) {
+
+        if (result.hasErrors()) return "attachments/create";
 
         attachmentService.createAttachment(dto);
-
         return "redirect:/tasks/" + dto.getTaskId();
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-
-        Long taskId = attachmentService.delete(id);
-
-        return "redirect:/tasks/" + taskId;
+        return "redirect:/tasks/" + attachmentService.delete(id);
     }
 }

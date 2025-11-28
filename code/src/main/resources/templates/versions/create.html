@@ -42,6 +42,15 @@
                 <div class="error-text" th:errors="*{releaseDate}"></div>
             </div>
 
+            <label>Батьківська версія (необов’язково):</label>
+            <select class="form-input" th:field="*{parentId}">
+                <option value="">— Немає —</option>
+                <option th:each="v : ${versions}"
+                        th:value="${v.id}"
+                        th:text="${v.versionNumber}">
+                </option>
+            </select>
+
             <div class="form-group">
                 <label>Виконуваний файл (необов’язково):</label>
                 <input type="file" class="form-input" th:field="*{executableFile}">

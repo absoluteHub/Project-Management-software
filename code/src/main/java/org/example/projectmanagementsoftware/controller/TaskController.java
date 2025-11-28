@@ -27,7 +27,8 @@ public class TaskController {
 
     @GetMapping("/create/{projectId}")
     public String createForm(@PathVariable Long projectId, Model model) {
-        model.addAttribute("task", new TaskDto());
+        TaskDto dto = new TaskDto();
+        model.addAttribute("task", dto);
         model.addAttribute("projectId", projectId);
         return "tasks/create";
     }
@@ -36,9 +37,9 @@ public class TaskController {
     public String create(@PathVariable Long projectId,
                          @Valid @ModelAttribute("task") TaskDto dto,
                          BindingResult result) {
-        if (result.hasErrors()) {
-            return "tasks/create";
-        }
+
+        if (result.hasErrors()) return "tasks/create";
+
         taskService.createTask(dto, projectId);
         return "redirect:/projects/" + projectId;
     }
@@ -52,19 +53,16 @@ public class TaskController {
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Long id,
                          @Valid @ModelAttribute("task") TaskDto dto,
-                         BindingResult result,
-                         Model model) {
+                         BindingResult result) {
 
-        if (result.hasErrors()) {
-            return "tasks/edit";
-        }
+        if (result.hasErrors()) return "tasks/edit";
 
         try {
             Long projectId = taskService.update(id, dto);
             return "redirect:/projects/" + projectId;
 
         } catch (TaskValidationException e) {
-            result.reject("task.validation", e.getMessage());
+            result.reject("validation", e.getMessage());
             return "tasks/edit";
         }
     }
@@ -82,14 +80,13 @@ public class TaskController {
     }
 
     @GetMapping("/{id}/move/{status}")
-    public String changeStatus(
-            @PathVariable Long id,
-            @PathVariable TaskStatus status
-    ) {
-        Task t = taskService.getTaskById(id);
-        t.setStatus(status);
-        taskService.save(t);
+    public String move(@PathVariable Long id,
+                       @PathVariable TaskStatus status) {
 
-        return "redirect:/projects/" + t.getProject().getId() + "/board";
+        Task task = taskService.getTaskById(id);
+        task.setStatus(status);
+        taskService.save(task);
+
+        return "redirect:/projects/" + task.getProject().getId() + "/board";
     }
 }

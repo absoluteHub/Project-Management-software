@@ -42,6 +42,15 @@
                 <input type="date" class="form-input" th:field="*{releaseDate}">
             </div>
 
+            <label>Батьківська версія (необов’язково):</label>
+            <select class="form-input" th:field="*{parentId}">
+                <option value="">— Немає —</option>
+                <option th:each="v : ${versions}"
+                        th:value="${v.id}"
+                        th:text="${v.versionNumber}">
+                </option>
+            </select>
+
             <div class="form-group">
                 <label class="form-label">Замінити виконуваний файл:</label>
                 <input type="file" name="executableFile" class="form-input">

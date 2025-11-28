@@ -29,10 +29,9 @@ public class TaskService {
 
     public TaskDto getTaskDtoById(Long id) {
         Task t = getTaskById(id);
+
         TaskDto dto = new TaskDto();
-
         dto.setId(t.getId());
-
         dto.setName(t.getName());
         dto.setDescription(t.getDescription());
         dto.setDeadline(t.getDeadline());
@@ -49,31 +48,31 @@ public class TaskService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException("Project not found"));
 
-        Task t = new Task();
-        t.setProject(project);
-        t.setName(dto.getName());
-        t.setDescription(dto.getDescription());
-        t.setDeadline(dto.getDeadline());
-        t.setPriority(dto.getPriority());
-        t.setStatus(dto.getStatus());
+        Task task = new Task();
+        task.setProject(project);
+        task.setName(dto.getName());
+        task.setDescription(dto.getDescription());
+        task.setDeadline(dto.getDeadline());
+        task.setPriority(dto.getPriority());
+        task.setStatus(dto.getStatus());
 
-        return taskRepository.save(t);
+        return taskRepository.save(task);
     }
 
     public Long update(Long id, TaskDto dto) {
 
-        Task existing = getTaskById(id);
+        Task task = getTaskById(id);
 
-        taskValidationChain.getChain().handle(dto, existing);
+        taskValidationChain.getChain().handle(dto, task);
 
-        existing.setName(dto.getName());
-        existing.setDescription(dto.getDescription());
-        existing.setDeadline(dto.getDeadline());
-        existing.setPriority(dto.getPriority());
-        existing.setStatus(dto.getStatus());
+        task.setName(dto.getName());
+        task.setDescription(dto.getDescription());
+        task.setDeadline(dto.getDeadline());
+        task.setPriority(dto.getPriority());
+        task.setStatus(dto.getStatus());
 
-        taskRepository.save(existing);
-        return existing.getProject().getId();
+        taskRepository.save(task);
+        return task.getProject().getId();
     }
 
     public Long delete(Long id) {
@@ -97,3 +96,4 @@ public class TaskService {
         return taskRepository.save(task);
     }
 }
+

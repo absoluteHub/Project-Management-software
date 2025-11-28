@@ -30,20 +30,27 @@ public class ProjectTeamService {
             return;
         }
 
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new NotFoundException("Project not found: " + projectId));
+        Project project = getProject(projectId);
+        User user = getUser(userId);
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found: " + userId));
+        ProjectTeam teamMember = new ProjectTeam();
+        teamMember.setProject(project);
+        teamMember.setUser(user);
 
-        ProjectTeam pt = new ProjectTeam();
-        pt.setProject(project);
-        pt.setUser(user);
-
-        projectTeamRepository.save(pt);
+        projectTeamRepository.save(teamMember);
     }
 
     public void removeMember(Long id) {
         projectTeamRepository.deleteById(id);
+    }
+
+    private Project getProject(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Project not found: " + id));
+    }
+
+    private User getUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found: " + id));
     }
 }

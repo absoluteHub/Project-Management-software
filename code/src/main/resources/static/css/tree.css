@@ -1,0 +1,76 @@
+body {
+    font-family: "Inter", Arial, sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    padding: 24px;
+}
+
+.tree-container {
+    background: #ffffff;
+    padding: 20px 28px;
+    border-radius: 10px;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.tree-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.tree ul {
+    list-style: none;
+    padding-left: 20px;
+    position: relative;
+}
+
+.tree ul::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8px;
+    width: 1px;
+    height: 100%;
+    background: #c7cdd8;
+}
+
+.tree li {
+    margin: 8px 0;
+    padding-left: 16px;
+    position: relative;
+}
+
+.tree li::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 0;
+    width: 12px;
+    height: 1px;
+    background: #c7cdd8;
+}
+
+.node {
+    display: inline-block;
+    padding: 6px 10px;
+    background: #eef1f6;
+    border-radius: 6px;
+    font-size: 14px;
+    border: 1px solid #d9dde6;
+    transition: 0.15s;
+}
+
+.node:hover {
+    background: #e3e7ef;
+    border-color: #c6cada;
+    cursor: pointer;
+    transform: translateX(2px);
+}
+
+.root {
+    font-weight: 600;
+    background: #e2f0ff;
+    border-color: #aed0ff;
+}

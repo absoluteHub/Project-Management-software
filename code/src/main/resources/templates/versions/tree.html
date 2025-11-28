@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Дерево версій</title>
+    <link rel="stylesheet" th:href="@{/css/tree.css}">
+</head>
+
+<body>
+<h1>Дерево версій</h1>
+
+<ul>
+    <li>
+        <span th:text="${tree.name}"></span>
+
+        <ul th:if="${tree.children != null and !tree.children.isEmpty()}">
+            <li th:each="child : ${tree.children}">
+                <span th:text="${child.name}"></span>
+
+                <ul th:if="${child.children != null and !child.children.isEmpty()}">
+                    <li th:each="c2 : ${child.children}">
+                        <span th:text="${c2.name}"></span>
+
+                        <ul th:if="${c2.children != null and !c2.children.isEmpty()}">
+                            <li th:each="c3 : ${c2.children}">
+                                <span th:text="${c3.name}"></span>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+            </li>
+        </ul>
+
+    </li>
+</ul>
+
+</body>
+</html>

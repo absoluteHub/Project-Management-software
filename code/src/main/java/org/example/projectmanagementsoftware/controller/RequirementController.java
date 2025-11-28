@@ -27,10 +27,8 @@ public class RequirementController {
 
     @GetMapping("/create/{projectId}")
     public String createForm(@PathVariable Long projectId, Model model) {
-
         RequirementDto dto = new RequirementDto();
         dto.setProjectId(projectId);
-
         model.addAttribute("req", dto);
         return "requirements/create";
     }
@@ -39,9 +37,7 @@ public class RequirementController {
     public String create(@Valid @ModelAttribute("req") RequirementDto dto,
                          BindingResult result) {
 
-        if (result.hasErrors()) {
-            return "requirements/create";
-        }
+        if (result.hasErrors()) return "requirements/create";
 
         requirementService.create(dto);
         return "redirect:/requirements/project/" + dto.getProjectId();
@@ -49,19 +45,7 @@ public class RequirementController {
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-
-        var req = requirementService.getById(id);
-        RequirementDto dto = new RequirementDto();
-
-        dto.setId(req.getId());
-        dto.setTitle(req.getTitle());
-        dto.setDescription(req.getDescription());
-        dto.setRequirementType(req.getRequirementType());
-        dto.setStatus(req.getStatus());
-        dto.setProjectId(req.getProject().getId());
-
-        model.addAttribute("req", dto);
-
+        model.addAttribute("req", requirementService.toDto(id));
         return "requirements/edit";
     }
 
@@ -70,17 +54,15 @@ public class RequirementController {
                        @Valid @ModelAttribute("req") RequirementDto dto,
                        BindingResult result) {
 
-        if (result.hasErrors()) {
-            return "requirements/edit";
-        }
+        if (result.hasErrors()) return "requirements/edit";
 
         requirementService.update(id, dto);
         return "redirect:/requirements/project/" + dto.getProjectId();
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, @RequestParam Long projectId) {
-
+    public String delete(@PathVariable Long id,
+                         @RequestParam Long projectId) {
         requirementService.delete(id);
         return "redirect:/requirements/project/" + projectId;
     }

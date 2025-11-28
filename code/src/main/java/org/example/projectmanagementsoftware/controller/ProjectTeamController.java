@@ -19,8 +19,7 @@ public class ProjectTeamController {
 
     @GetMapping("/{projectId}")
     public String team(@PathVariable Long projectId, Model model) {
-        TeamDto teamDto = facade.getTeam (projectId);
-        model.addAttribute ("team",teamDto);
+        model.addAttribute("team", facade.getTeam(projectId));
         return "team/manage";
     }
 
@@ -31,7 +30,8 @@ public class ProjectTeamController {
     }
 
     @PostMapping("/remove/{id}")
-    public String remove(@PathVariable Long id, @RequestParam Long projectId) {
+    public String remove(@PathVariable Long id,
+                         @RequestParam Long projectId) {
         projectTeamService.removeMember(id);
         return "redirect:/projects/team/" + projectId;
     }

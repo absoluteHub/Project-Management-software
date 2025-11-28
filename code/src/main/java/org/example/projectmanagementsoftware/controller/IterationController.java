@@ -20,10 +20,8 @@ public class IterationController {
 
     @GetMapping("/project/{projectId}")
     public String list(@PathVariable Long projectId, Model model) {
-
         model.addAttribute("project", projectService.getProjectById(projectId));
         model.addAttribute("iterations", iterationService.getByProject(projectId));
-
         return "iterations/list";
     }
 
@@ -31,9 +29,7 @@ public class IterationController {
     public String createForm(@PathVariable Long projectId, Model model) {
         IterationDto dto = new IterationDto();
         dto.setProjectId(projectId);
-
         model.addAttribute("iteration", dto);
-
         return "iterations/create";
     }
 
@@ -41,30 +37,16 @@ public class IterationController {
     public String create(@Valid @ModelAttribute("iteration") IterationDto dto,
                          BindingResult result) {
 
-        if (result.hasErrors()) {
-            return "iterations/create";
-        }
+        if (result.hasErrors()) return "iterations/create";
 
-        iterationService.create(dto);
-
+        iterationService.saveNew(dto);
         return "redirect:/iterations/project/" + dto.getProjectId();
     }
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
 
-        var it = iterationService.getById(id);
-
-        IterationDto dto = new IterationDto();
-        dto.setId(it.getId());
-        dto.setName(it.getName());
-        dto.setStartDate(it.getStartDate());
-        dto.setEndDate(it.getEndDate());
-        dto.setIterationType(it.getIterationType());
-        dto.setProjectId(it.getProject().getId());
-
-        model.addAttribute("iteration", dto);
-
+        model.addAttribute("iteration", iterationService.toDto(id));
         return "iterations/edit";
     }
 
@@ -73,18 +55,14 @@ public class IterationController {
                          @Valid @ModelAttribute("iteration") IterationDto dto,
                          BindingResult result) {
 
-        if (result.hasErrors()) {
-            return "iterations/edit";
-        }
+        if (result.hasErrors()) return "iterations/edit";
 
         iterationService.update(id, dto);
-
         return "redirect:/iterations/project/" + dto.getProjectId();
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, @RequestParam Long projectId) {
-
         iterationService.delete(id);
         return "redirect:/iterations/project/" + projectId;
     }

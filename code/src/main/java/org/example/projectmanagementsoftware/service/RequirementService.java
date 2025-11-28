@@ -30,16 +30,11 @@ public class RequirementService {
     }
 
     public Requirement create(RequirementDto dto) {
-
-        Project project = projectRepository.findById(dto.getProjectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
-
+        Project project = getProject(dto.getProjectId());
         var strategy = strategyContext.getStrategy(dto.getRequirementType());
 
         Requirement r = new Requirement();
-        r.setTitle(dto.getTitle());
-        r.setRequirementType(dto.getRequirementType());
-        r.setStatus(dto.getStatus());
+        applyDto(r, dto);
         r.setProject(project);
 
         strategy.enrichRequirement(r);
@@ -50,12 +45,7 @@ public class RequirementService {
 
     public Requirement update(Long id, RequirementDto dto) {
         Requirement r = getById(id);
-
-        r.setTitle(dto.getTitle());
-        r.setRequirementType(dto.getRequirementType());
-        r.setStatus(dto.getStatus());
-        r.setDescription(dto.getDescription());
-
+        applyDto(r, dto);
         return requirementRepository.save(r);
     }
 
@@ -65,4 +55,31 @@ public class RequirementService {
         }
         requirementRepository.deleteById(id);
     }
+
+    public RequirementDto toDto(Long id) {
+        Requirement r = getById(id);
+
+        RequirementDto dto = new RequirementDto();
+        dto.setId(r.getId());
+        dto.setTitle(r.getTitle());
+        dto.setDescription(r.getDescription());
+        dto.setRequirementType(r.getRequirementType());
+        dto.setStatus(r.getStatus());
+        dto.setProjectId(r.getProject().getId());
+
+        return dto;
+    }
+
+    private void applyDto(Requirement r, RequirementDto dto) {
+        r.setTitle(dto.getTitle());
+        r.setDescription(dto.getDescription());
+        r.setRequirementType(dto.getRequirementType());
+        r.setStatus(dto.getStatus());
+    }
+
+    private Project getProject(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Project not found: " + id));
+    }
 }
+

@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 public class ProjectDto {
 
+
     @NotBlank(message = "Назва не може бути порожньою")
     private String name;
 

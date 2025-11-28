@@ -3,6 +3,7 @@ package org.example.projectmanagementsoftware.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.projectmanagementsoftware.dto.VersionDto;
+import org.example.projectmanagementsoftware.pattern.composite.interfaces.VersionComponent;
 import org.example.projectmanagementsoftware.service.ProjectService;
 import org.example.projectmanagementsoftware.service.VersionService;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,7 @@ public class VersionController {
         dto.setProjectId(projectId);
 
         model.addAttribute("version", dto);
+        model.addAttribute("versions", versionService.getByProject(projectId));
         return "versions/create";
     }
 
@@ -62,6 +64,7 @@ public class VersionController {
         dto.setProjectId(v.getProject().getId());
 
         model.addAttribute("version", dto);
+        model.addAttribute("versions", versionService.getByProject(id));
 
         return "versions/edit";
     }
@@ -85,5 +88,12 @@ public class VersionController {
 
         versionService.delete(id);
         return "redirect:/versions/project/" + projectId;
+    }
+
+    @GetMapping("/{id}/tree")
+    public String tree(@PathVariable Long id, Model model) {
+        VersionComponent tree = versionService.getVersionTree(id);
+        model.addAttribute("tree", tree);
+        return "versions/tree";
     }
 }

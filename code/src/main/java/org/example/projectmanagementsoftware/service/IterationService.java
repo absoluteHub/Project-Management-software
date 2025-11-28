@@ -27,32 +27,47 @@ public class IterationService {
                 .orElseThrow(() -> new NotFoundException("Iteration not found: " + id));
     }
 
-    public Iteration create(IterationDto dto) {
-        Project project = projectRepository.findById(dto.getProjectId())
-                .orElseThrow(() -> new NotFoundException("Project not found"));
-
+    public Iteration saveNew(IterationDto dto) {
         Iteration it = new Iteration();
-        it.setName(dto.getName());
-        it.setStartDate(dto.getStartDate());
-        it.setEndDate(dto.getEndDate());
-        it.setIterationType(dto.getIterationType());
-        it.setProject(project);
-
+        it.setProject(getProject(dto.getProjectId()));
+        applyDto(it, dto);
         return iterationRepository.save(it);
     }
 
     public Iteration update(Long id, IterationDto dto) {
         Iteration it = getById(id);
-
-        it.setName(dto.getName());
-        it.setStartDate(dto.getStartDate());
-        it.setEndDate(dto.getEndDate());
-        it.setIterationType(dto.getIterationType());
-
+        applyDto(it, dto);
         return iterationRepository.save(it);
     }
 
     public void delete(Long id) {
         iterationRepository.deleteById(id);
     }
+
+    public IterationDto toDto(Long id) {
+        Iteration it = getById(id);
+
+        IterationDto dto = new IterationDto();
+        dto.setId(it.getId());
+        dto.setName(it.getName());
+        dto.setStartDate(it.getStartDate());
+        dto.setEndDate(it.getEndDate());
+        dto.setIterationType(it.getIterationType());
+        dto.setProjectId(it.getProject().getId());
+
+        return dto;
+    }
+
+    private Project getProject(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Project not found: " + id));
+    }
+
+    private void applyDto(Iteration it, IterationDto dto) {
+        it.setName(dto.getName());
+        it.setStartDate(dto.getStartDate());
+        it.setEndDate(dto.getEndDate());
+        it.setIterationType(dto.getIterationType());
+    }
 }
+
