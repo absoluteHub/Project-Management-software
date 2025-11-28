@@ -7,6 +7,7 @@ import org.example.projectmanagementsoftware.dto.ProjectDto;
 import org.example.projectmanagementsoftware.pattern.facade.ProjectManagementFacade;
 import org.example.projectmanagementsoftware.pattern.facade.dto.KanbanDto;
 import org.example.projectmanagementsoftware.service.ProjectService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -82,5 +83,10 @@ public class ProjectController {
         KanbanDto board = projectFacade.getKanban(projectId);
         model.addAttribute("board", board);
         return "projects/board";
+    }
+
+    @GetMapping("/api/projects/{id}")
+    public ResponseEntity<Project> getProject(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectById(id));
     }
 }
